@@ -1,0 +1,9 @@
+/* MOTION AND POLISH
+   Fade-ins, focus rings, reduced-motion handling. */
+.fade-in{animation:rise .6s ease both}
+.step-indicator .step,.rounded-full.h-10.w-10{transition:all .4s}
+.landing-cta:focus-visible,button:focus-visible{outline:2px solid var(--cy)!important;outline-offset:3px}
+.sidebar-link{transition:background .25s,color .25s}
+.active-link{box-shadow:inset 0 0 0 1px rgba(34,211,238,.25)}
+@media (prefers-reduced-motion:reduce){.landing-cta,.amb,.rec-glow.on::before,.rec-glow.on::after,.landing-feature{animation:none!important;opacity:1}}
+.dotted-orb{display:block;flex:none;pointer-events:none}

@@ -1,0 +1,28 @@
+/* =====================================================================
+   DESIGN TOKENS - the single place to change the look of SpeakBetter AI.
+   Dark "thinking orbs" reel style: near-black canvas, warm white thin type,
+   monochrome surfaces, ONE accent colour (cyan) for CTAs and highlights.
+   ===================================================================== */
+:root {
+  /* Canvas and surfaces (darkest to lightest) */
+  --bg: #050505;
+  --s1: #0d0d0e;   /* cards, sidebar */
+  --s2: #151517;   /* inputs, pills, raised surfaces */
+  --s3: #202023;   /* selected / hover pill */
+  --line: rgba(255, 255, 255, .08);
+
+  /* Text: warm white for focus, dimmed warm gray for secondary */
+  --tx: #f5f2ee;
+  --mu: #9a958e;
+
+  /* Accent: cyan is reserved for CTAs, highlights and the recording glow */
+  --cy: #22d3ee;
+  --cy2: #14b8a6;
+  --ac: var(--cy);
+
+  /* Shape and type */
+  --radius-card: 16px;
+  --radius-pill: 999px;
+  --font-sans: Inter, system-ui, sans-serif;
+  --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}

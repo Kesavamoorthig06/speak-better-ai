@@ -1,0 +1,13 @@
+/* RECORDING GLOW
+   Orbiting cyan glow ring around the camera preview while recording (.rec-glow.on). Brightens with the voice level via --lvl. */
+@property --ga{syntax:"<angle>";inherits:false;initial-value:0deg}
+.rec-glow{--lvl:0;position:relative;border-radius:18px;transition:box-shadow .4s}
+.rec-glow::before,.rec-glow::after{content:"";position:absolute;inset:-5px;border-radius:21px;padding:2px;pointer-events:none;opacity:0;transition:opacity .5s;
+ background:conic-gradient(from var(--ga),transparent 0 55%,rgba(34,211,238,.15) 70%,#22d3ee 92%,#fff 100%);
+ -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude}
+.rec-glow::after{filter:blur(10px);inset:-8px;padding:5px}
+.rec-glow.on::before,.rec-glow.on::after{opacity:1;animation:orbit 3.2s linear infinite}
+@keyframes orbit{to{--ga:360deg}}
+.rec-glow.on{box-shadow:0 0 calc(18px + var(--lvl)*70px) calc(var(--lvl)*10px) rgba(34,211,238,calc(.12 + var(--lvl)*.5)),0 0 0 10px transparent;outline:2px dotted rgba(34,211,238,.35);outline-offset:9px}
+.rec-glow .pulse-border{border-color:transparent!important;animation:none!important}
+.rec-glow video{border-radius:12px}

@@ -1,0 +1,8 @@
+/* MIC WAVE
+   Styles for components/recorder/MicWave.jsx (live dotted voice visualiser). */
+.mic-wave{position:relative;margin-top:14px;border:1px solid var(--line);background:var(--s1);border-radius:14px;padding:8px 12px 6px}
+.mic-wave-canvas{display:block;width:100%;height:64px}
+.mic-wave-tag{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:.7rem;color:var(--mu);letter-spacing:.08em;text-transform:uppercase}
+.mic-wave-tag i{width:6px;height:6px;border-radius:50%;background:#55555b;display:inline-block}
+.mic-wave-tag i.live{background:var(--cy);box-shadow:0 0 8px var(--cy);animation:blink 1.2s infinite}
+@keyframes blink{50%{opacity:.35}}

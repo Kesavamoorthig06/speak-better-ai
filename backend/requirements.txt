@@ -1,0 +1,8 @@
+fastapi
+uvicorn
+python-multipart
+pydub
+SpeechRecognition
+numpy<2
+librosa
+mediapipe==0.10.14

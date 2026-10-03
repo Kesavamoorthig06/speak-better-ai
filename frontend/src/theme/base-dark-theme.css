@@ -1,0 +1,82 @@
+/* =====================================================================
+   BASE DARK THEME - restyles the existing Tailwind/App.css markup into the
+   dark orb look. Colours come from tokens.css; layout is left untouched.
+   ===================================================================== */
+
+
+html,body,#root{background:var(--bg)!important;color:var(--tx)!important;font-family:var(--font-sans)!important;font-weight:300}
+body{display:block!important}
+*{scrollbar-color:#333 var(--bg)}
+h1,h2,h3,h4{color:var(--tx)!important;font-weight:300!important;letter-spacing:-.01em}
+p,li,span,label,td,th{font-weight:300}
+b,strong,.font-bold,.font-semibold,.font-medium,.font-extrabold{font-weight:500!important}
+a,.link-primary{color:var(--tx)!important;text-decoration:underline;text-decoration-color:rgba(255,255,255,.25)}
+/* surfaces */
+.bg-white,.bg-gray-50,.bg-gray-100,.bg-blue-50,.bg-blue-100,.bg-gray-200,.bg-indigo-50,.bg-green-50,.bg-yellow-50,.bg-red-100,.bg-red-50,
+.sidebar,.mobile-header,.settings-panel,.settings-section,.testimonial,.tutorial-item,.featured-tutorial,.transcript-box,.settings-container,.settings-header,.settings-content,.settings-footer,.hero-section{
+ background:var(--s1)!important;color:var(--tx)!important;border-color:var(--line)!important;box-shadow:none!important}
+.bg-gradient-to-r,.bg-gradient-to-br,[class*="from-blue"],[class*="from-indigo"]{background:var(--s1)!important;background-image:none!important}
+.layout-container,.main-content,.content-area{background:var(--bg)!important}
+.shadow-md,.shadow-sm,.shadow-lg,.shadow-2xl,.shadow-xl{box-shadow:none!important}
+.rounded-xl,.rounded-2xl,.rounded-lg{border:1px solid var(--line);border-radius:16px!important}
+.rounded-full{border-radius:999px!important}
+.border,.border-t,.border-b,.border-gray-200,.border-gray-300,.border-blue-600{border-color:var(--line)!important}
+/* header block (was blue) */
+.bg-blue-600:not(button){background:var(--s2)!important;color:var(--tx)!important;position:relative;overflow:hidden}
+.bg-blue-600:not(button) h1{font-weight:300!important}
+/* text colours */
+.text-gray-900,.text-gray-800,.text-gray-700,.text-black,.text-white{color:var(--tx)!important}
+.text-gray-600,.text-gray-500,.text-gray-400,.opacity-90,.help-text{color:var(--mu)!important}
+.text-blue-600,.text-blue-500,.text-indigo-600,.text-blue-700{color:#fff!important}
+.text-green-500,.text-green-600,.text-green-700{color:#7ee0a1!important}
+.text-red-500,.text-red-600,.text-red-700{color:#ff8a8a!important}
+.text-yellow-500{color:#e8c870!important}
+/* mono meta */
+.text-xs,.text-sm,.tutorial-meta,.settings-subtitle,.section-title{font-family:var(--mono)!important;letter-spacing:.01em}
+/* pills */
+.pill{display:inline-block;background:var(--s3);color:var(--tx);border-radius:999px;padding:.02em .5em;font-weight:500}
+.bg-blue-600.rounded-lg,.rounded-lg.bg-blue-600{border:0}
+/* buttons */
+button,.primary-button,.secondary-button,.danger-button,.btn-primary{border-radius:999px!important;box-shadow:none!important;font-weight:500!important}
+button.bg-blue-600,button.btn-primary,.primary-button,.btn-primary,.bg-indigo-600:is(button){background:var(--ac)!important;color:#041014!important;border:0!important;box-shadow:0 0 0 0 rgba(34,211,238,.4)!important}
+button.bg-blue-600:hover,.bg-indigo-600:is(button):hover{box-shadow:0 0 24px 2px rgba(34,211,238,.35)!important}
+button.bg-blue-600:hover,.primary-button:hover{background:#5ee0f2!important}
+button.bg-red-600,.danger-button{background:#3a1a1c!important;color:#ff9a9a!important;border:1px solid rgba(255,120,120,.25)!important}
+.secondary-button,button.bg-gray-200,button.bg-gray-100,button.bg-gray-600,button.bg-gray-500{background:var(--s2)!important;color:var(--tx)!important;border:1px solid var(--line)!important}
+button:disabled{background:var(--s2)!important;color:#55555b!important}
+/* inputs */
+input,select,textarea,.settings-field-input,.input-field,.select-field{background:var(--s2)!important;color:var(--tx)!important;border:1px solid var(--line)!important;border-radius:14px!important}
+input::placeholder,textarea::placeholder{color:#66666d}
+input:focus,select:focus,textarea:focus{outline:1px solid rgba(255,255,255,.3)!important;box-shadow:none!important}
+/* sidebar */
+.sidebar{border-right:1px solid var(--line)!important}
+.sidebar-header{border-bottom:1px solid var(--line)!important;background:transparent!important}
+.logo-text,.header-title{font-weight:300!important;color:var(--tx)!important}
+.logo-icon{display:none!important}
+.sidebar-link{color:var(--mu)!important;border-radius:999px!important;background:transparent!important}
+.sidebar-link:hover{background:var(--s2)!important;color:var(--tx)!important}
+.active-link,.sidebar-link.active-link{background:var(--s3)!important;color:var(--tx)!important;font-weight:500}
+.active-link .link-icon,.link-icon{color:inherit!important}
+.menu-button,.close-button{background:transparent!important;color:var(--tx)!important}
+.mobile-header{border-bottom:1px solid var(--line)!important}
+.backdrop{background:rgba(0,0,0,.7)!important}
+/* stepper */
+.step-indicator .step,.rounded-full.h-10.w-10{background:var(--s2)!important;color:var(--mu)!important;border:1px solid var(--line)}
+.step-indicator .step.active,.rounded-full.h-10.w-10.bg-blue-600,.rounded-full.h-10.w-10.text-white{background:var(--tx)!important;color:#111!important;border-color:var(--tx)!important}
+.step-line,.w-16.h-1{background:var(--s3)!important}
+.step-line.active,.w-16.h-1.bg-blue-600{background:var(--tx)!important}
+/* recorder */
+.bg-black,.bg-gray-900,.bg-gray-800,.video-container,.webcam-container{background:#0a0a0b!important;border-color:var(--line)!important}
+.video-container.recording{border-color:rgba(255,120,120,.5)!important}
+video{border-radius:16px}
+/* progress / bars */
+.bg-gray-200.rounded-full,.h-2\.5{background:var(--s3)!important}
+.bg-green-500,.bg-blue-500,.bg-yellow-500,.bg-indigo-600{background:var(--tx)!important}
+.bg-red-500{background:#ff8a8a!important}
+.prose,.prose *{color:var(--tx)!important}
+.animate-spin{border-color:var(--tx)!important;border-top-color:transparent!important}
+/* Header orb (top-right of the main card) */
+.bg-blue-600:not(button) .header-orb{position:absolute;right:20px;top:50%;transform:translateY(-50%);opacity:.9}
+@media (max-width:640px){.bg-blue-600:not(button) .header-orb{opacity:.28;right:12px;width:96px!important;height:96px!important}}
+.logo-container{display:flex;align-items:center;gap:10px}
+.mobile-header{align-items:center;justify-content:space-between}

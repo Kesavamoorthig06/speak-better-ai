@@ -1,4 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
+import MicWave from './MicWave';
+import DottedOrb from '../orb/DottedOrb';
 import { Video, Mic, StopCircle, Camera, AlertCircle, RefreshCw } from 'lucide-react';
 
 function WebcamRecorder({ setVideoBlob, theme = "dark" }) {
@@ -6,6 +8,7 @@ function WebcamRecorder({ setVideoBlob, theme = "dark" }) {
   const mediaRecorderRef = useRef(null);
   const recordedChunks = useRef([]);
   const timerRef = useRef(null);
+  const glowRef = useRef(null);
 
   const [mediaStream, setMediaStream] = useState(null);
   const [isRecording, setIsRecording] = useState(false);
@@ -141,27 +144,28 @@ function WebcamRecorder({ setVideoBlob, theme = "dark" }) {
 
       {cameraLoading && (
         <div className="flex flex-col items-center justify-center p-8">
-          <RefreshCw className="animate-spin mb-4" size={36} />
-          <p>Initializing camera...</p>
+          <DottedOrb size={72} speed={2.2} glow="var(--cy)" />
+          <p className="mt-3">Getting your camera ready...</p>
         </div>
       )}
 
       {permissionDenied && (
         <div className={`text-center p-6 rounded-lg border ${currentTheme.permissionError}`}>
           <AlertCircle className="mx-auto mb-2" size={48} />
-          <h3 className="font-semibold text-lg">Camera Access Denied</h3>
-          <p className="mt-2">Please allow access to your camera and microphone to use this feature.</p>
+          <h3 className="font-semibold text-lg">We can't see your camera yet</h3>
+          <p className="mt-2">No worries. Allow camera and microphone access in your browser, then try again.</p>
           <button
             onClick={() => window.location.reload()}
             className={`mt-4 ${currentTheme.buttonPrimary} py-2 px-4 rounded-lg`}
           >
-            Try Again
+            Try again
           </button>
         </div>
       )}
 
       {!cameraLoading && !permissionDenied && (
         <>
+          <div ref={glowRef} className={`rec-glow ${isRecording ? 'on' : ''}`}>
           <div className={`relative rounded-lg overflow-hidden border-4 ${isRecording ? 'border-red-500 pulse-border' : currentTheme.videoContainer}`}>
             <video
               ref={videoRef}
@@ -186,6 +190,9 @@ function WebcamRecorder({ setVideoBlob, theme = "dark" }) {
               </div>
             )}
           </div>
+          </div>
+
+          <MicWave stream={mediaStream} recording={isRecording} glowRef={glowRef} />
 
           <div className="flex justify-center mt-6 space-x-4">
             {!isRecording ? (
@@ -195,7 +202,7 @@ function WebcamRecorder({ setVideoBlob, theme = "dark" }) {
                 className={`flex items-center gap-2 px-6 py-3 rounded-full font-medium transition-all ${isReady && !countdownActive ? currentTheme.buttonPrimary : 'bg-gray-400 cursor-not-allowed'}`}
               >
                 <Mic size={20} />
-                Start Recording
+                I'm ready
               </button>
             ) : (
               <button
@@ -203,13 +210,13 @@ function WebcamRecorder({ setVideoBlob, theme = "dark" }) {
                 className={`flex items-center gap-2 px-6 py-3 rounded-full font-medium transition-all ${currentTheme.buttonStop}`}
               >
                 <StopCircle size={20} />
-                Stop Recording
+                Finish
               </button>
             )}
           </div>
 
           <div className={`mt-4 text-sm text-center ${currentTheme.statusText}`}>
-            {isRecording ? `Recording: ${formatTime(recordingTime)}` : (isReady ? 'Ready to record' : 'Initializing camera...')}
+            {isRecording ? `Recording ${formatTime(recordingTime)}. You are doing great.` : (isReady ? 'Ready when you are. Take your time.' : 'Getting your camera ready...')}
           </div>
         </>
       )}

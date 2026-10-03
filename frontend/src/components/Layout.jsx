@@ -3,6 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import { Home, Info, BookOpen, Settings, Menu, X, Mic } from "lucide-react";
 // Using the combined App.css file
 import "../App.css";
+import DottedOrb from "./orb/DottedOrb";
 
 const Layout = ({ children }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -17,7 +18,7 @@ const Layout = ({ children }) => {
         {/* Sidebar Header */}
         <div className="sidebar-header">
           <div className="logo-container">
-            <Mic className="logo-icon" />
+            <DottedOrb size={26} />
             <h1 className="logo-text">SpeakBetter AI</h1>
           </div>
           <button onClick={toggleSidebar} className="close-button">
@@ -67,6 +68,7 @@ const Layout = ({ children }) => {
             <Menu />
           </button>
           <h1 className="header-title">SpeakBetter AI</h1>
+          <DottedOrb size={24} />
         </header>
 
         {/* Page Content */}

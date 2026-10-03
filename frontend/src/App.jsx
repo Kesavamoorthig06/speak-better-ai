@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import WebcamRecorder from './components/WebcamRecorder';
+import WebcamRecorder from './components/recorder/WebcamRecorder';
 import UploadForm from './components/UploadForm';
 import ReportDisplay from './components/ReportDisplay';
 import Layout from './components/Layout';
+import LandingHero from './components/LandingHero';
+import DottedOrb from './components/orb/DottedOrb';
 import About from './pages/About';
 import Tutorials from './pages/Tutorials';
 import Settings from './pages/Settings';
@@ -17,6 +19,7 @@ function HomePage() {
   const [report, setReport] = useState(null);
   const [activeStep, setActiveStep] = useState(1);
   const [isProcessing, setIsProcessing] = useState(false);
+  const [started, setStarted] = useState(false);
 
   const handleRecordingComplete = (blob) => {
     if (blob) {
@@ -44,10 +47,12 @@ function HomePage() {
       {/* Header */}
       <div className="bg-blue-600 p-6 text-white">
         <h1 className="text-3xl font-bold">SpeakBetter AI</h1>
-        <p className="mt-2 opacity-90">AI-Powered Public Speaking Coach</p>
+        <p className="mt-2 opacity-90">Your friendly public speaking coach</p>
+        <DottedOrb size={84} className="header-orb" />
       </div>
 
       {/* Progress Steps */}
+      {(started || activeStep > 1) && (
       <div className="flex justify-center p-4 border-b">
         <div className="flex items-center">
           {[1, 2, 3].map((step) => (
@@ -72,14 +77,18 @@ function HomePage() {
           ))}
         </div>
       </div>
+      )}
 
       <div className="p-6">
+        {/* Landing */}
+        {activeStep === 1 && !started && <LandingHero onStart={() => setStarted(true)} />}
+
         {/* Step 1: Record */}
-        {activeStep === 1 && (
+        {activeStep === 1 && started && (
           <div className="space-y-6">
             <div className="text-center mb-6">
-              <h2 className="text-2xl font-semibold text-gray-800">Record Your Speech</h2>
-              <p className="text-gray-600 mt-2">Position yourself in front of the camera and speak clearly</p>
+              <h2 className="text-2xl font-semibold text-gray-800">Record Your <span className="pill">Speech</span></h2>
+              <p className="text-gray-600 mt-2">Take a breath, look at the camera, and speak the way you normally would.</p>
             </div>
             <WebcamRecorder setVideoBlob={handleRecordingComplete} />
           </div>
@@ -89,8 +98,8 @@ function HomePage() {
         {activeStep === 2 && (
           <div className="space-y-6">
             <div className="text-center mb-6">
-              <h2 className="text-2xl font-semibold text-gray-800">Generate Your Report</h2>
-              <p className="text-gray-600 mt-2">Analyze your speaking performance</p>
+              <h2 className="text-2xl font-semibold text-gray-800">Generate Your <span className="pill">Report</span></h2>
+              <p className="text-gray-600 mt-2">Nicely done. Let's see how it went.</p>
             </div>
             <UploadForm 
               videoBlob={videoBlob} 
@@ -100,8 +109,8 @@ function HomePage() {
             />
             {isProcessing && (
               <div className="text-center py-8">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-                <p className="mt-4 text-gray-600">Analyzing your speaking performance...</p>
+                <div className="flex justify-center"><DottedOrb size={72} speed={2.2} glow="var(--cy)" /></div>
+                <p className="mt-4 text-gray-600">Listening carefully to your speech... this takes a moment.</p>
               </div>
             )}
           </div>
@@ -111,8 +120,8 @@ function HomePage() {
         {activeStep === 3 && report && (
           <div className="space-y-6">
             <div className="text-center mb-6">
-              <h2 className="text-2xl font-semibold text-gray-800">Your Speaking Analysis</h2>
-              <p className="text-gray-600 mt-2">Review your performance and recommendations</p>
+              <h2 className="text-2xl font-semibold text-gray-800">Your Speaking <span className="pill">Analysis</span></h2>
+              <p className="text-gray-600 mt-2">Here is what we noticed, with a few gentle tips.</p>
             </div>
             <ReportDisplay report={report} />
             <div className="text-center mt-8">
@@ -120,7 +129,7 @@ function HomePage() {
                 onClick={startNewSession}
                 className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg transition-colors"
               >
-                Start New Analysis
+                Practice again
               </button>
             </div>
           </div>
