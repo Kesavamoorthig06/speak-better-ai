@@ -16,6 +16,9 @@ jobs:
           sed -i 's#webcamrecorder.css#WebcamRecorder.css#' frontend/src/main.jsx
           sed -i "s#http://127.0.0.1:8000/upload/#/upload/#" frontend/src/components/UploadForm.jsx
           grep -n "upload/" frontend/src/components/UploadForm.jsx
+          printf '@tailwind base;\n@tailwind components;\n@tailwind utilities;\n' | cat - frontend/src/index.css > /tmp/idx.css && mv /tmp/idx.css frontend/src/index.css
+          echo 'export default { content: ["./index.html","./src/**/*.{js,jsx}"], theme:{extend:{}}, plugins:[] }' > frontend/tailwind.config.js
+          echo 'export default { plugins: { tailwindcss: {}, autoprefixer: {} } }' > frontend/postcss.config.js
           cat > nginx.conf.template <<'EOF'
           server {
             listen 80;
@@ -42,6 +45,7 @@ jobs:
           COPY frontend/package*.json ./
           RUN npm ci
           COPY frontend/ .
+          RUN npm i -D tailwindcss@3.4.17 postcss autoprefixer --no-audit --no-fund
           RUN npm run build
           FROM nginx:alpine
           COPY --from=build /app/dist /usr/share/nginx/html
