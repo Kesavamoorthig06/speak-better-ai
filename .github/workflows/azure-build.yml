@@ -1,0 +1,81 @@
+name: azure-build
+on:
+  push:
+    branches: [azure-deploy]
+  workflow_dispatch:
+permissions:
+  contents: read
+  packages: write
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Apply deploy patches
+        run: |
+          sed -i 's#webcamrecorder.css#WebcamRecorder.css#' frontend/src/main.jsx
+          sed -i "s#http://127.0.0.1:8000/upload/#/upload/#" frontend/src/components/UploadForm.jsx
+          grep -n "upload/" frontend/src/components/UploadForm.jsx
+          cat > nginx.conf.template <<'EOF'
+          server {
+            listen 80;
+            root /usr/share/nginx/html;
+            index index.html;
+            client_max_body_size 100m;
+            location /upload/ {
+              proxy_pass ${BACKEND_URL};
+              proxy_ssl_server_name on;
+              proxy_set_header X-Forwarded-Proto $scheme;
+              proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+              proxy_read_timeout 230s;
+              proxy_send_timeout 230s;
+              proxy_request_buffering off;
+            }
+            location / {
+              try_files $uri $uri/ /index.html;
+            }
+          }
+          EOF
+          cat > Dockerfile.frontend <<'EOF'
+          FROM node:20-alpine AS build
+          WORKDIR /app
+          COPY frontend/package*.json ./
+          RUN npm ci
+          COPY frontend/ .
+          RUN npm run build
+          FROM nginx:alpine
+          COPY --from=build /app/dist /usr/share/nginx/html
+          COPY nginx.conf.template /etc/nginx/templates/default.conf.template
+          EOF
+          cat > backend/requirements.txt <<'EOF'
+          fastapi
+          uvicorn
+          python-multipart
+          pydub
+          SpeechRecognition
+          numpy<2
+          librosa
+          mediapipe==0.10.14
+          EOF
+          cat > backend/Dockerfile <<'EOF'
+          FROM python:3.11-slim
+          RUN apt-get update && apt-get install -y --no-install-recommends ffmpeg libgl1 libglib2.0-0 && rm -rf /var/lib/apt/lists/*
+          WORKDIR /app
+          COPY requirements.txt .
+          RUN pip install --no-cache-dir -r requirements.txt
+          COPY . .
+          EXPOSE 8000
+          CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+          EOF
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build and push images
+        run: |
+          OWNER=$(echo "${{ github.repository_owner }}" | tr A-Z a-z)
+          docker build -f Dockerfile.frontend -t ghcr.io/$OWNER/speakbetter-frontend:latest .
+          docker build -t ghcr.io/$OWNER/speakbetter-backend:latest ./backend
+          docker push ghcr.io/$OWNER/speakbetter-frontend:latest
+          docker push ghcr.io/$OWNER/speakbetter-backend:latest
